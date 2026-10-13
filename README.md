@@ -2,17 +2,22 @@
 
 [![Buy me a coffee](https://img.shields.io/badge/buy_me_a_coffee-%E2%9D%A4%EF%B8%8F-FEEBE7?&labelColor=FF0000)](https://www.paypal.com/donate/?hosted_button_id=YZQDE3TEYDBWA)
 
-> Bidirectional WhatsApp formatting library: `toHTML` converts WhatsApp-formatted text into HTML, while `toWA` converts supported HTML back into WhatsApp markup. The converters are dependency-free; the bundled MCP server uses the Model Context Protocol SDK. Works in Node.js and modern browsers, and ships ESM, CommonJS and TypeScript declarations.
+> Bidirectional WhatsApp formatting library: `toHTML` converts WhatsApp-formatted text into HTML,
+> while `toWA` converts supported HTML back into WhatsApp markup. The converters are dependency-free;
+> the bundled MCP server uses the Model Context Protocol SDK. Works in Node.js and modern browsers,
+> and ships ESM, CommonJS and TypeScript declarations.
 
 ![Node.js](https://img.shields.io/badge/node.js-%3E%3D20-5FA04E?logo=nodedotjs&logoColor=white&style=for-the-badge)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178C6?style=for-the-badge)](https://www.typescriptlang.org)
-[![Tests](https://img.shields.io/badge/tests-80%20passing-brightgreen?style=for-the-badge)](#testing)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178C6?style=for-the-badge)
+![Tests](https://img.shields.io/badge/tests-80%20passing-brightgreen?style=for-the-badge)
 
 ![npm](https://img.shields.io/npm/v/@darcas/wa-format?style=for-the-badge)
 ![NPM Downloads](https://img.shields.io/npm/dy/%40darcas%2Fwa-format?style=for-the-badge)
 
+[![Dynamic JSON Badge](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2FDarCas%2Frefero-design-mcp%2Frefs%2Fheads%2Fmain%2Fpackage.json&query=%24.name&style=for-the-badge&label=design%20by&color=red)](https://github.com/DarCas/refero-design-mcp)
+
 ```ts
-import { toHTML, toWA } from "@darcas/wa-format"
+import {toHTML, toWA} from "@darcas/wa-format"
 
 toHTML("*Hello* _world_")         // => "<b>Hello</b> <i>world</i>"
 toWA("<b>Hello</b> <i>world</i>") // => "*Hello* _world_"
@@ -37,7 +42,8 @@ npm install
 Requirements:
 
 - Node.js `>=20`
-- Runtime dependencies: `@modelcontextprotocol/server` and `zod`, used only by the MCP server. `toHTML` and `toWA` have no dependencies of their own.
+- Runtime dependencies: `@modelcontextprotocol/server` and `zod`, used only by the MCP server.
+  `toHTML` and `toWA` have no dependencies of their own.
 - Development-only dependencies are `typescript` and `@types/node`
 
 ## Usage
@@ -45,7 +51,7 @@ Requirements:
 ### ESM
 
 ```ts
-import { toHTML } from "@darcas/wa-format"
+import {toHTML} from "@darcas/wa-format"
 
 const html = toHTML("*Bold*, _italic_, ~strike~ and `code`.")
 ```
@@ -53,7 +59,7 @@ const html = toHTML("*Bold*, _italic_, ~strike~ and `code`.")
 ### CommonJS
 
 ```js
-const { toHTML } = require("@darcas/wa-format")
+const {toHTML} = require("@darcas/wa-format")
 
 const html = toHTML("*Bold* and _italic_.")
 ```
@@ -61,9 +67,11 @@ const html = toHTML("*Bold* and _italic_.")
 ### Browser
 
 ```html
+
 <script type="module">
-  import { toHTML } from "https://esm.sh/@darcas/wa-format"
-  document.querySelector("#message").innerHTML = toHTML("*Hello* _world_")
+    import {toHTML} from "https://esm.sh/@darcas/wa-format"
+
+    document.querySelector("#message").innerHTML = toHTML("*Hello* _world_")
 </script>
 ```
 
@@ -77,39 +85,44 @@ Register it in an MCP client (Claude Desktop, Codex, Cursor, …):
 
 ```json
 {
-  "mcpServers": {
-    "wa-format": {
-      "command": "npx",
-      "args": ["-y", "-p", "@darcas/wa-format", "wa-format-mcp"]
+    "mcpServers": {
+        "wa-format": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "-p",
+                "@darcas/wa-format",
+                "wa-format-mcp"
+            ]
+        }
     }
-  }
 }
 ```
 
-| Tool | Arguments | Returns |
-| --- | --- | --- |
-| `whatsapp_to_html` | `text` (required), `style`, `lineBreaks`, `trim` | HTML |
-| `html_to_whatsapp` | `html` (required), `bullet` | WhatsApp-formatted text |
+| Tool               | Arguments                                        | Returns                 |
+|--------------------|--------------------------------------------------|-------------------------|
+| `whatsapp_to_html` | `text` (required), `style`, `lineBreaks`, `trim` | HTML                    |
+| `html_to_whatsapp` | `html` (required), `bullet`                      | WhatsApp-formatted text |
 
 The arguments mirror the options of `toHTML` and `toWA`. Invalid arguments are
 rejected by the tool schema.
 
-Both tools are advertised as read-only and side-effect free
-(`readOnlyHint: true`, `destructiveHint: false`, `idempotentHint: true`,
+Both tools are advertised as read-only and side-effect free (`readOnlyHint: true`,
+`destructiveHint: false`, `idempotentHint: true`,
 `openWorldHint: false`), so clients can auto-approve them.
 
 ## Supported formatting
 
-| Format | WhatsApp syntax | HTML output |
-| --- | --- | --- |
-| Bold | `*text*` | `<b>text</b>` |
-| Italic | `_text_` | `<i>text</i>` |
-| Strikethrough | `~text~` | `<s>text</s>` |
-| Inline code | `` `text` `` | `<code>text</code>` |
-| Code block | ` ```text``` ` | `<pre><code>text</code></pre>` |
-| Block quote | `> text` (line start) | `<blockquote>text</blockquote>` |
-| Bulleted list | `- text` or `* text` (line start) | `<ul><li>text</li></ul>` |
-| Numbered list | `1. text` (line start) | `<ol><li>text</li></ol>` |
+| Format        | WhatsApp syntax                   | HTML output                     |
+|---------------|-----------------------------------|---------------------------------|
+| Bold          | `*text*`                          | `<b>text</b>`                   |
+| Italic        | `_text_`                          | `<i>text</i>`                   |
+| Strikethrough | `~text~`                          | `<s>text</s>`                   |
+| Inline code   | `` `text` ``                      | `<code>text</code>`             |
+| Code block    | ` ```text``` `                    | `<pre><code>text</code></pre>`  |
+| Block quote   | `> text` (line start)             | `<blockquote>text</blockquote>` |
+| Bulleted list | `- text` or `* text` (line start) | `<ul><li>text</li></ul>`        |
+| Numbered list | `1. text` (line start)            | `<ol><li>text</li></ol>`        |
 
 Inline styles can be nested and combined in any order:
 
@@ -124,11 +137,11 @@ toHTML("_*bold italic*_") // "<i><b>bold italic</b></i>"
 
 Converts a WhatsApp-formatted string to HTML and returns it.
 
-| Option | Type | Default | Description |
-| --- | --- | --- | --- |
-| `style` | `"semantic" \| "legacy"` | `"semantic"` | `semantic` emits `<b>`/`<i>`/`<s>`; `legacy` emits `<strong>`/`<em>`/`<s>`. |
-| `lineBreaks` | `boolean` | `true` | Render `\n` as `<br>`. When `false`, newlines are kept as `\n`. |
-| `trim` | `boolean` | `true` | Trim leading/trailing whitespace from the input before parsing. |
+| Option       | Type                     | Default      | Description                                                                 |
+|--------------|--------------------------|--------------|-----------------------------------------------------------------------------|
+| `style`      | `"semantic" \| "legacy"` | `"semantic"` | `semantic` emits `<b>`/`<i>`/`<s>`; `legacy` emits `<strong>`/`<em>`/`<s>`. |
+| `lineBreaks` | `boolean`                | `true`       | Render `\n` as `<br>`. When `false`, newlines are kept as `\n`.             |
+| `trim`       | `boolean`                | `true`       | Trim leading/trailing whitespace from the input before parsing.             |
 
 Empty or whitespace-only input returns `""`. A non-string `input` throws a `TypeError`.
 
@@ -136,9 +149,9 @@ Empty or whitespace-only input returns `""`. A non-string `input` throws a `Type
 
 The inverse of `toHTML`: converts HTML into WhatsApp-formatted text.
 
-| Option | Type | Default | Description |
-| --- | --- | --- | --- |
-| `bullet` | `"-" \| "*"` | `"-"` | Marker used for bulleted lists. |
+| Option   | Type         | Default | Description                     |
+|----------|--------------|---------|---------------------------------|
+| `bullet` | `"-" \| "*"` | `"-"`   | Marker used for bulleted lists. |
 
 Recognized tags: `<b>`/`<strong>`, `<i>`/`<em>`, `<s>`/`<strike>`/`<del>`,
 `<code>`, `<pre>`, `<blockquote>`, `<ul>`/`<ol>`/`<li>` (with `start`),
@@ -162,7 +175,7 @@ inspection. See [`src/ast.ts`](src/ast.ts) for the node types.
 Renders a `Document` produced by `parse` to HTML with resolved options.
 
 ```ts
-import { parse, renderHtml, resolveOptions } from "@darcas/wa-format"
+import {parse, renderHtml, resolveOptions} from "@darcas/wa-format"
 
 const doc = parse("*Hello*")
 const html = renderHtml(doc, resolveOptions())
@@ -197,8 +210,8 @@ The implementation follows these rules:
   block element (list, quote, code block) to its neighbours is represented by the
   element itself. A blank line next to a block element is absorbed.
 - **`toWA` is best-effort and lossy.** WhatsApp has no escape character, so a
-  literal `*`/`_`/`~`/`` ` `` in the text, marker runs adjacent to word characters
-  (`<b>a</b>b` → `*a*b`), and code containing backticks cannot round-trip exactly.
+  literal `*`/`_`/`~`/`` ` `` in the text, marker runs adjacent to word characters (`<b>a</b>b` →
+  `*a*b`), and code containing backticks cannot round-trip exactly.
   Whitespace at the edges of a style is moved outside its markers. The guaranteed
   property is HTML idempotence: `toHTML(toWA(html)) === toHTML(html)`.
 
@@ -227,7 +240,8 @@ built-in `node:test`; no test framework is used. The MCP server is compiled into
 
 ## Contributing
 
-Contributions are welcome. Please open an issue to discuss significant changes before submitting a pull request.
+Contributions are welcome. Please open an issue to discuss significant changes before submitting a
+pull request.
 
 1. Fork the repository.
 2. Create a feature branch.
