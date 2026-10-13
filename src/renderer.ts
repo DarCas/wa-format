@@ -67,7 +67,7 @@ function renderBlock(node: BlockNode, options: ResolvedOptions): string {
             const items = node.items
                 .map((item) => `<li>${renderInline(item, options)}</li>`)
                 .join("")
-            
+
             return `<${tag}>${items}</${tag}>`
         }
     }
