@@ -24,9 +24,14 @@ test("lineBreaks: false keeps \\n", () => {
     assert.equal(toHTML("a\nb", {lineBreaks: true}), "a<br>b")
 })
 
-test("trim removes surrounding whitespace", () => {
-    assert.equal(toHTML("  *a*  ", {trim: true}), "<b>a</b>")
-    assert.equal(toHTML("\n*a*\n", {trim: true}), "<b>a</b>")
+test("trim is enabled by default", () => {
+    assert.equal(toHTML("  *a*  "), "<b>a</b>")
+    assert.equal(toHTML("\n*a*\n"), "<b>a</b>")
+})
+
+test("trim: false keeps surrounding whitespace", () => {
+    assert.equal(toHTML("  *a*  ", {trim: false}), "  <b>a</b>  ")
+    assert.equal(toHTML("\n*a*\n", {trim: false}), "<br><b>a</b><br>")
 })
 
 test("empty and whitespace-only input returns empty string", () => {

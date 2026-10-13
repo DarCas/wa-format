@@ -2,11 +2,11 @@
 
 [![Buy me a coffee](https://img.shields.io/badge/buy_me_a_coffee-%E2%9D%A4%EF%B8%8F-FEEBE7?&labelColor=FF0000)](https://www.paypal.com/donate/?hosted_button_id=YZQDE3TEYDBWA)
 
-> Bidirectional WhatsApp formatting library: `toHTML` converts WhatsApp-formatted text into HTML, while `toWA` converts supported HTML back into WhatsApp markup. It has no runtime dependencies and works in Node.js and modern browsers. The package ships ESM, CommonJS and TypeScript declarations.
+> Bidirectional WhatsApp formatting library: `toHTML` converts WhatsApp-formatted text into HTML, while `toWA` converts supported HTML back into WhatsApp markup. The converters are dependency-free; the bundled MCP server uses the Model Context Protocol SDK. Works in Node.js and modern browsers, and ships ESM, CommonJS and TypeScript declarations.
 
-![Node.js](https://img.shields.io/badge/node.js-%3E%3D18-5FA04E?logo=nodedotjs&logoColor=white&style=for-the-badge)
+![Node.js](https://img.shields.io/badge/node.js-%3E%3D20-5FA04E?logo=nodedotjs&logoColor=white&style=for-the-badge)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178C6?style=for-the-badge)](https://www.typescriptlang.org)
-[![Tests](https://img.shields.io/badge/tests-71%20passing-brightgreen?style=for-the-badge)](#testing)
+[![Tests](https://img.shields.io/badge/tests-80%20passing-brightgreen?style=for-the-badge)](#testing)
 
 ![npm](https://img.shields.io/npm/v/@darcas/wa-format?style=for-the-badge)
 ![NPM Downloads](https://img.shields.io/npm/dy/%40darcas%2Fwa-format?style=for-the-badge)
@@ -36,8 +36,8 @@ npm install
 
 Requirements:
 
-- Node.js `>=18`
-- The manifest declares no runtime `dependencies`
+- Node.js `>=20`
+- Runtime dependencies: `@modelcontextprotocol/server` and `zod`, used only by the MCP server. `toHTML` and `toWA` have no dependencies of their own.
 - Development-only dependencies are `typescript` and `@types/node`
 
 ## Usage
@@ -66,6 +66,37 @@ const html = toHTML("*Bold* and _italic_.")
   document.querySelector("#message").innerHTML = toHTML("*Hello* _world_")
 </script>
 ```
+
+## MCP server
+
+The package ships an MCP server, `wa-format-mcp`, that exposes the two
+converters as tools: `whatsapp_to_html` and `html_to_whatsapp`. It uses the
+stdio transport (Node.js 20 or later).
+
+Register it in an MCP client (Claude Desktop, Codex, Cursor, …):
+
+```json
+{
+  "mcpServers": {
+    "wa-format": {
+      "command": "npx",
+      "args": ["-y", "-p", "@darcas/wa-format", "wa-format-mcp"]
+    }
+  }
+}
+```
+
+| Tool | Arguments | Returns |
+| --- | --- | --- |
+| `whatsapp_to_html` | `text` (required), `style`, `lineBreaks`, `trim` | HTML |
+| `html_to_whatsapp` | `html` (required), `bullet` | WhatsApp-formatted text |
+
+The arguments mirror the options of `toHTML` and `toWA`. Invalid arguments are
+rejected by the tool schema.
+
+Both tools are advertised as read-only and side-effect free
+(`readOnlyHint: true`, `destructiveHint: false`, `idempotentHint: true`,
+`openWorldHint: false`), so clients can auto-approve them.
 
 ## Supported formatting
 
@@ -97,7 +128,7 @@ Converts a WhatsApp-formatted string to HTML and returns it.
 | --- | --- | --- | --- |
 | `style` | `"semantic" \| "legacy"` | `"semantic"` | `semantic` emits `<b>`/`<i>`/`<s>`; `legacy` emits `<strong>`/`<em>`/`<s>`. |
 | `lineBreaks` | `boolean` | `true` | Render `\n` as `<br>`. When `false`, newlines are kept as `\n`. |
-| `trim` | `boolean` | `false` | Trim leading/trailing whitespace from the input before parsing. |
+| `trim` | `boolean` | `true` | Trim leading/trailing whitespace from the input before parsing. |
 
 Empty or whitespace-only input returns `""`. A non-string `input` throws a `TypeError`.
 
@@ -178,19 +209,21 @@ Package entry points:
 - ESM: `./dist/esm/index.js`
 - CommonJS: `./dist/cjs/index.js`
 - Types: `./dist/esm/index.d.ts`
+- MCP binary: `./dist/esm/mcp/bin.js` (`wa-format-mcp`)
 
 Available scripts:
 
 ```bash
-npm install        # install dev tooling
+npm install        # install dependencies and dev tooling
 npm run build      # emit dist/esm (ESM + .d.ts) and dist/cjs (CommonJS)
-npm test           # build, then run the node:test suite (71 tests)
+npm test           # build, then run the node:test suite (80 tests)
 npm run typecheck  # type-check src and tests
 ```
 
-The manifest also defines `deploy`, which type-checks, builds and publishes the
-package publicly. Tests run on the built output (`dist/`). The test runner is the
-Node.js built-in `node:test`; no test framework is used.
+The manifest also defines `deploy`, which builds and publishes the package
+publicly. Tests run on the built output (`dist/`). The test runner is the Node.js
+built-in `node:test`; no test framework is used. The MCP server is compiled into
+`dist/esm` only (the CJS build excludes `src/mcp`).
 
 ## Contributing
 

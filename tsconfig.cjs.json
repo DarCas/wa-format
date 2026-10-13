@@ -7,5 +7,6 @@
     "outDir": "dist/cjs",
     "declaration": false
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["src/mcp"]
 }

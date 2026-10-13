@@ -14,7 +14,7 @@ export interface FormatOptions {
      * - `"legacy"`: `<strong>`, `<em>`, `<s>`
      */
     style?: "semantic" | "legacy"
-    /** Trim leading/trailing whitespace from the input before parsing. Default `false`. */
+    /** Trim leading/trailing whitespace from the input before parsing. Default `true`. */
     trim?: boolean
 }
 
@@ -28,7 +28,7 @@ export interface ResolvedOptions {
 export const DEFAULT_OPTIONS: ResolvedOptions = {
     lineBreaks: true,
     style: "semantic",
-    trim: false,
+    trim: true,
 }
 
 /** Applies defaults to user-supplied options. */
