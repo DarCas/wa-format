@@ -1,0 +1,126 @@
+/*
+ * Dario Casertano <dario@casertano.name>
+ * Copyright (c) 2026 Casertano Dario – All rights reserved.
+ * Licensed under the MIT License.
+ */
+
+/**
+ * Design tokens — single source of truth for the whole page.
+ *
+ * Direction: "two panes, one wire". A near-black instrument panel where a warm-paper
+ * WhatsApp pane and a cold-terminal HTML pane face each other across a single signal
+ * accent. Everything else is monochrome, hairline-bordered and factual.
+ *
+ * Components must consume tokens only — no raw hex values in component stylesheets.
+ *
+ * Research lineage: Nuxt (dark devtools skeleton, hairline rings instead of shadows),
+ * Factory (one contained light surface on near-black ground), PostHog (warm paper).
+ */
+
+:root {
+    /* ---- Colour: dark canvas ---- */
+    --bg: #0b0d0e;
+    --bg-elev: #12161a;
+    --surface: #171c20;
+    --surface-2: #1e2429;
+    --line: #262d33;
+    --line-strong: #38424a;
+
+    /* ---- Colour: text ---- */
+    --ink: #e9edf0;
+    --ink-2: #a4afb7;
+    --ink-3: #7f8b94;
+
+    /* ---- Colour: signal accent (rationed — one element per viewport) ---- */
+    --accent: #2fd07a;
+    --accent-hi: #57e394;
+    --accent-dim: #1b8a4f;
+    --accent-wash: rgba(47, 208, 122, 0.12);
+
+    /* ---- Colour: warm paper (WhatsApp pane only) ---- */
+    --paper: #efe9dd;
+    --paper-2: #f7f3ea;
+    --paper-line: #ddd4c4;
+    --paper-ink: #201d18;
+    --paper-ink-2: #5d564b;
+    --bubble: #d9fdd3;
+
+    /* ---- Colour: live converter tokens (Shiki handles static samples) ---- */
+    --code-blue: #7cc4ff;
+    --code-amber: #ffb86c;
+    --code-pine: #1c6b45;
+
+    /* ---- Typography ---- */
+    --font-display: "Space Grotesk Variable", ui-sans-serif, system-ui, sans-serif;
+    --font-mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+    --fs-hero: clamp(2.5rem, 5.2vw, 4rem);
+    --lh-hero: 1.04;
+    --fs-display: clamp(1.75rem, 3.4vw, 2.5rem);
+    --lh-display: 1.12;
+    --fs-h3: 1.125rem;
+    --lh-h3: 1.4;
+    --fs-lead: 1.125rem;
+    --lh-lead: 1.65;
+    --fs-body: 1rem;
+    --lh-body: 1.65;
+    --fs-sm: 0.875rem;
+    --lh-sm: 1.6;
+    --fs-nav: 0.875rem;
+    --lh-nav: 1.43;
+    --fs-mono: 0.8125rem;
+    --lh-mono: 1.7;
+    --fs-eyebrow: 0.6875rem;
+    --lh-eyebrow: 1.45;
+
+    /* ---- Spacing: 4px base unit ---- */
+    --s1: 4px;
+    --s2: 8px;
+    --s3: 12px;
+    --s4: 16px;
+    --s5: 20px;
+    --s6: 24px;
+    --s8: 32px;
+    --s10: 40px;
+    --s14: 56px;
+    --s18: 72px;
+    --s24: 96px;
+    --s32: 128px;
+
+    --gap-element: var(--s2);
+    --gap-card: var(--s6);
+    --gap-section: var(--s24);
+
+    /* ---- Radius ---- */
+    --r-chip: 4px;
+    --r-btn: 8px;
+    --r-pane: 12px;
+    --r-pill: 999px;
+
+    /* ---- Layout ---- */
+    --max-width: 1200px;
+    --max-wide: 1280px;
+    --gutter: clamp(20px, 4vw, 48px);
+    --header-h: 60px;
+
+    /* ---- Motion ---- */
+    --dur-fast: 120ms;
+    --dur-base: 220ms;
+    --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+    /* ---- Focus ---- */
+    --focus-ring: 2px solid var(--accent);
+    --focus-offset: 2px;
+}
+
+@media (max-width: 1023px) {
+    :root {
+        --gap-section: var(--s18);
+    }
+}
+
+@media (max-width: 639px) {
+    :root {
+        --gap-section: var(--s14);
+    }
+}

@@ -5,23 +5,32 @@
     "url": "https://casertano.name"
   },
   "dependencies": {
+    "@darcas/wa-format": "^0.5.0",
+    "@fontsource-variable/jetbrains-mono": "^5.3.0",
+    "@fontsource-variable/space-grotesk": "^5.3.0",
     "react": "^19.3.0",
     "react-dom": "^19.3.0"
   },
-  "description": "",
+  "description": "Landing page for @darcas/wa-format, the bidirectional WhatsApp formatting library.",
   "devDependencies": {
     "@darcas/rollup-sub-resource-integrity": "^2.0.3",
+    "@resvg/resvg-js": "^2.6.2",
     "@types/node": "^26.4.1",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^4.3.4",
+    "shiki": "^4.5.0",
     "typescript": "^5.8.3",
     "vite": "^7.0.4"
   },
+  "engines": {
+    "node": ">=20.19.0"
+  },
   "license": "MIT",
   "name": "@darcas/wa-format-website",
+  "private": true,
   "scripts": {
-    "build": "tsc --noEmit && vite build && node scripts/prerender.mjs",
+    "build": "node scripts/facts.mjs && node scripts/highlight.mjs && tsc --noEmit && vite build && node scripts/og.mjs && node scripts/sitemap.mjs && node scripts/prerender.mjs",
     "dev": "vite",
     "preview": "vite preview"
   },

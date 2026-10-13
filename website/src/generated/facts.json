@@ -1,0 +1,19 @@
+{
+  "description": "Convert WhatsApp formatted text into HTML and back. Supports bold, italic, strikethrough, inline code, code blocks, block quotes and lists. Works in Node.js and the browser, and exposes an MCP server.",
+  "keywords": [
+    "whatsapp",
+    "wa",
+    "format",
+    "formatter",
+    "markdown",
+    "html",
+    "chat",
+    "parser",
+    "mcp"
+  ],
+  "license": "MIT",
+  "name": "@darcas/wa-format",
+  "nodeEngine": ">=20",
+  "repository": "https://github.com/DarCas/wa-format",
+  "version": "0.5.0"
+}

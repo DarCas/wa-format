@@ -1,0 +1,63 @@
+/*
+ * Dario Casertano <dario@casertano.name>
+ * Copyright (c) 2026 Casertano Dario – All rights reserved.
+ * Licensed under the MIT License.
+ */
+
+.block {
+    min-width: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--r-pane);
+    background: var(--surface);
+    overflow: hidden;
+}
+
+.bar {
+    display: flex;
+    align-items: center;
+    gap: var(--s3);
+    padding: var(--s2) var(--s3);
+    border-bottom: 1px solid var(--line);
+}
+
+.label {
+    color: var(--ink-3);
+    font-family: var(--font-mono);
+    font-size: var(--fs-eyebrow);
+    line-height: var(--lh-eyebrow);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.copy {
+    margin-inline-start: auto;
+    padding: var(--s1) var(--s2);
+    border: 1px solid var(--line);
+    border-radius: var(--r-chip);
+    color: var(--ink-2);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    line-height: 1.4;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition:
+        color var(--dur-fast) var(--ease),
+        border-color var(--dur-fast) var(--ease);
+}
+
+.copy:hover {
+    color: var(--ink);
+    border-color: var(--line-strong);
+}
+
+.code {
+    overflow-x: auto;
+}
+
+.code pre {
+    margin: 0;
+    padding: var(--s4);
+    background: transparent !important;
+    white-space: pre;
+}

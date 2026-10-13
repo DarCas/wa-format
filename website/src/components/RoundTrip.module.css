@@ -1,0 +1,83 @@
+/*
+ * Dario Casertano <dario@casertano.name>
+ * Copyright (c) 2026 Casertano Dario – All rights reserved.
+ * Licensed under the MIT License.
+ */
+
+.layout {
+    display: grid;
+    gap: var(--s6);
+    align-items: start;
+}
+
+.scroll {
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: var(--r-pane);
+    background: var(--surface);
+}
+
+.table {
+    width: 100%;
+    min-width: 420px;
+    border-collapse: collapse;
+    font-size: var(--fs-sm);
+    line-height: var(--lh-sm);
+}
+
+.table th,
+.table td {
+    padding: var(--s3) var(--s4);
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    vertical-align: top;
+}
+
+.table thead th {
+    color: var(--ink-3);
+    font-family: var(--font-mono);
+    font-size: var(--fs-eyebrow);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.table code {
+    color: var(--ink);
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono);
+    white-space: nowrap;
+}
+
+.side {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s4);
+    min-width: 0;
+}
+
+.note {
+    color: var(--ink-2);
+    font-size: var(--fs-sm);
+    line-height: var(--lh-sm);
+}
+
+.limits {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s2);
+    padding-left: var(--s5);
+    color: var(--ink-2);
+    font-size: var(--fs-sm);
+    line-height: var(--lh-sm);
+}
+
+@media (min-width: 1024px) {
+    .layout {
+        grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    }
+}

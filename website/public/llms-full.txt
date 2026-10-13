@@ -1,0 +1,110 @@
+# wa-format — full API digest
+
+> Bidirectional WhatsApp formatting library. `toHTML`: WhatsApp markup to safe
+> HTML. `toWA`: supported HTML back to WhatsApp markup. Core is dependency-free;
+> the bundled MCP server uses the Model Context Protocol SDK. Works in Node ≥20
+> and modern browsers. Ships ESM, CJS and TypeScript declarations.
+
+- Site: https://whatsapp-html.os.darcas.app/
+- Repo: https://github.com/DarCas/wa-format
+- Package: @darcas/wa-format v0.5.0, MIT
+
+## Install
+
+npm: `npm i @darcas/wa-format` · pnpm: `pnpm add @darcas/wa-format` ·
+yarn: `yarn add @darcas/wa-format` · bun: `bun add @darcas/wa-format`
+
+## toHTML(input, options?)
+
+`toHTML(input: string, options?: FormatOptions): string`
+
+| Option | Type | Default | Description |
+|---|---|---|---|
+| `style` | `"semantic" \| "legacy"` | `"semantic"` | `semantic` emits `<b>`/`<i>`/`<s>`; `legacy` emits `<strong>`/`<em>`/`<s>`. |
+| `lineBreaks` | `boolean` | `true` | Render `\n` as `<br>`. When `false`, newlines stay `\n`. |
+| `trim` | `boolean` | `true` | Trim leading/trailing whitespace before parsing. |
+
+Empty or whitespace-only input returns `""`. Non-string input throws `TypeError`.
+
+```ts
+toHTML("*Bold*, _italic_, ~strike~ and `code`.")
+```
+
+## toWA(html, options?)
+
+`toWA(html: string, options?: ToWAOptions): string`
+
+| Option | Type | Default | Description |
+|---|---|---|---|
+| `bullet` | `"-" \| "*"` | `"-"` | Marker used for bulleted lists. |
+
+Tag mapping: `<b>`/`<strong>` → `*`, `<i>`/`<em>` → `_`, `<s>`/`<strike>`/`<del>`
+→ `~`, `<code>` → backticks, `<pre>` → fenced block, `<blockquote>` → `> `,
+`<ul>`/`<li>` → `- `, `<ol>`/`<li>` → `N. ` (with `start`), `<a href>` →
+`text (url)`, `<br>` → break, `<p>`/`<div>`/`<h1>`–`<h6>` → line containers.
+Unknown tags are unwrapped; entities are decoded.
+
+```ts
+toWA("<b>Hello</b> <i>world</i>")        // "*Hello* _world_"
+toWA("<blockquote>a<br>b</blockquote>")  // "> a\n> b"
+toWA("<ul><li>one</li><li>two</li></ul>") // "- one\n- two"
+```
+
+## parse / renderHtml / parseHtml
+
+- `parse(input: string): Document` — WhatsApp text to AST. Line endings
+  normalized before parsing.
+- `renderHtml(document: Document, options: ResolvedOptions): string` — AST to
+  HTML with resolved options.
+- `parseHtml(html: string): HtmlNode[]` — low-level HTML fragment parser used
+  by `toWA`.
+- Also exported: `resolveOptions`, `DEFAULT_OPTIONS`, `FormatOptions`,
+  `ResolvedOptions`, `ToWAOptions`, AST node types.
+
+```ts
+import {parse, renderHtml, resolveOptions} from "@darcas/wa-format"
+const html = renderHtml(parse("*Hello*"), resolveOptions())
+```
+
+## Behavior rules
+
+- Markers must touch content: `*bold*` is bold, `* bold *` is literal.
+- A marker inside a word (`snake_case`, `2*3*4`) stays literal.
+- No escape character: wrap markers in code to show them literally.
+- Code is opaque: markers inside `` `code` `` or fenced blocks never parse.
+- Lists need a space: `- text`, `* text`, `1. text`. Up to two digits for
+  numbered lists. No nested lists.
+- Consecutive quote lines group into one `<blockquote>` with `<br>` between.
+- All text is HTML-escaped (`&`, `<`, `>`, `"`, `'`); output is safe to inject.
+- `\n` between text lines becomes `<br>`; newlines around block elements are
+  absorbed by the element.
+- `toWA` is lossy: literal markers, markers adjacent to word characters, and
+  backticks inside code cannot round-trip. Guarantee: HTML idempotence,
+  `toHTML(toWA(html)) === toHTML(html)`.
+
+## MCP server
+
+`wa-format-mcp` over stdio (Node ≥20).
+
+```json
+{
+    "mcpServers": {
+        "wa-format": {
+            "command": "npx",
+            "args": ["-y", "-p", "@darcas/wa-format", "wa-format-mcp"]
+        }
+    }
+}
+```
+
+| Tool | Arguments | Returns |
+|---|---|---|
+| `whatsapp_to_html` | `text` (required), `style`, `lineBreaks`, `trim` | HTML |
+| `html_to_whatsapp` | `html` (required), `bullet` | WhatsApp text |
+
+Both tools: read-only, non-destructive, idempotent, closed-world — safe to
+auto-approve.
+
+## Facts
+
+0 core dependencies · ESM + CJS + types · 80 tests · Node ≥20 · MIT.

@@ -1,0 +1,130 @@
+/*
+ * Dario Casertano <dario@casertano.name>
+ * Copyright (c) 2026 Casertano Dario – All rights reserved.
+ * Licensed under the MIT License.
+ */
+
+.tabs {
+    display: flex;
+    gap: var(--s1);
+    flex-wrap: wrap;
+    margin-bottom: var(--s6);
+    padding: 3px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-btn);
+    background: var(--bg-elev);
+    width: fit-content;
+    max-width: 100%;
+}
+
+.tab {
+    padding: var(--s2) var(--s4);
+    border-radius: var(--r-chip);
+    color: var(--ink-3);
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono);
+    white-space: nowrap;
+    transition:
+        color var(--dur-fast) var(--ease),
+        background-color var(--dur-fast) var(--ease);
+}
+
+.tab:hover {
+    color: var(--ink-2);
+}
+
+.tab[data-active='true'] {
+    color: var(--accent);
+    background: var(--accent-wash);
+}
+
+.panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s4);
+    padding: var(--s6);
+    border: 1px solid var(--line);
+    border-radius: var(--r-pane);
+    background: var(--surface);
+}
+
+.panel[hidden] {
+    display: none;
+}
+
+.signature code {
+    color: var(--ink);
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono);
+}
+
+.example {
+    padding: var(--s3) var(--s4);
+    border: 1px solid var(--line);
+    border-radius: var(--r-btn);
+    background: var(--bg-elev);
+    overflow-x: auto;
+}
+
+.example code {
+    color: var(--ink-2);
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono);
+    white-space: pre;
+}
+
+.scroll {
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    min-width: 560px;
+    border-collapse: collapse;
+    font-size: var(--fs-sm);
+    line-height: var(--lh-sm);
+}
+
+.table th,
+.table td {
+    padding: var(--s2) var(--s3);
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    vertical-align: top;
+}
+
+.table thead th {
+    color: var(--ink-3);
+    font-family: var(--font-mono);
+    font-size: var(--fs-eyebrow);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.table td {
+    color: var(--ink-2);
+}
+
+.table code {
+    color: var(--ink);
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono);
+    white-space: nowrap;
+}
+
+.note,
+.footnote {
+    color: var(--ink-3);
+    font-size: var(--fs-sm);
+    line-height: var(--lh-sm);
+}
+
+.footnote {
+    margin-top: var(--s4);
+}

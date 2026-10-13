@@ -1,0 +1,161 @@
+/*
+ * Dario Casertano <dario@casertano.name>
+ * Copyright (c) 2026 Casertano Dario – All rights reserved.
+ * Licensed under the MIT License.
+ */
+
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--bg) 92%, transparent);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--dur-base) var(--ease);
+}
+
+/* The only permitted outer shadow: a hairline ring once the page has scrolled. */
+.header[data-scrolled='true'] {
+    border-bottom-color: var(--line);
+    box-shadow: 0 1px 0 0 var(--line);
+}
+
+.inner {
+    display: flex;
+    align-items: center;
+    gap: var(--s6);
+    height: var(--header-h);
+}
+
+.brand {
+    display: inline-flex;
+    align-items: baseline;
+    font-family: var(--font-mono);
+    font-size: var(--fs-nav);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+}
+
+.brandScope {
+    color: var(--ink-3);
+}
+
+.brandName {
+    color: var(--ink);
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    gap: var(--s5);
+    margin-inline-start: auto;
+}
+
+.navLink {
+    color: var(--ink-2);
+    font-size: var(--fs-nav);
+    font-weight: 500;
+    transition: color var(--dur-fast) var(--ease);
+}
+
+.navLink:hover {
+    color: var(--ink);
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: var(--s3);
+}
+
+.version {
+    padding: var(--s1) var(--s2);
+    border: 1px solid var(--line);
+    border-radius: var(--r-chip);
+    color: var(--ink-3);
+    font-family: var(--font-mono);
+    font-size: var(--fs-eyebrow);
+    line-height: var(--lh-eyebrow);
+}
+
+.repo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-chip);
+    color: var(--ink-2);
+    transition:
+        color var(--dur-fast) var(--ease),
+        border-color var(--dur-fast) var(--ease);
+}
+
+.repo:hover {
+    color: var(--ink);
+    border-color: var(--line-strong);
+}
+
+.repoIcon {
+    width: 16px;
+    height: 16px;
+    stroke: currentColor;
+    stroke-width: 1.75;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+}
+
+.menu {
+    display: none;
+    padding: var(--s2) var(--s3);
+    border: 1px solid var(--line);
+    border-radius: var(--r-chip);
+    color: var(--ink-2);
+    font-family: var(--font-mono);
+    font-size: var(--fs-eyebrow);
+    line-height: var(--lh-eyebrow);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+@media (max-width: 899px) {
+    .nav {
+        position: absolute;
+        top: var(--header-h);
+        left: 0;
+        right: 0;
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        margin-inline-start: 0;
+        padding: var(--s2) var(--gutter) var(--s4);
+        background: var(--bg-elev);
+        border-bottom: 1px solid var(--line);
+    }
+
+    .nav[data-open='true'] {
+        display: flex;
+    }
+
+    .navLink {
+        padding-block: var(--s3);
+        border-top: 1px solid var(--line);
+    }
+
+    .menu {
+        display: inline-flex;
+        margin-inline-start: auto;
+    }
+
+    .actions {
+        margin-inline-start: 0;
+    }
+
+    .version {
+        display: none;
+    }
+}

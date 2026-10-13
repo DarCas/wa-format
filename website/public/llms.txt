@@ -1,0 +1,66 @@
+# wa-format
+
+> Bidirectional WhatsApp formatting library: `toHTML` converts WhatsApp-formatted
+> text into safe HTML; `toWA` converts supported HTML back into WhatsApp markup.
+> Zero-dependency core (only the MCP server pulls the protocol SDK). Isomorphic:
+> Node ≥20 and modern browsers. ESM + CJS + TypeScript declarations.
+
+- Site: https://whatsapp-html.os.darcas.app/
+- Repo: https://github.com/DarCas/wa-format
+- Package: @darcas/wa-format v0.5.0
+- License: MIT
+
+## Install
+
+```bash
+npm i @darcas/wa-format
+```
+
+Browser:
+
+```html
+<script type="module">
+    import {toHTML} from "https://esm.sh/@darcas/wa-format"
+    document.querySelector("#message").innerHTML = toHTML("*Hello* _world_")
+</script>
+```
+
+## The two functions
+
+```ts
+import {toHTML, toWA} from "@darcas/wa-format"
+
+toHTML("*Hello* _world_")          // "<b>Hello</b> <i>world</i>"
+toWA("<b>Hello</b> <i>world</i>")  // "*Hello* _world_"
+```
+
+## Formatting table
+
+| Format | WhatsApp | HTML |
+|---|---|---|
+| Bold | `*text*` | `<b>text</b>` |
+| Italic | `_text_` | `<i>text</i>` |
+| Strikethrough | `~text~` | `<s>text</s>` |
+| Inline code | `` `text` `` | `<code>text</code>` |
+| Code block | ` ```text``` ` | `<pre><code>text</code></pre>` |
+| Block quote | `> text` | `<blockquote>text</blockquote>` |
+| Bulleted list | `- text` or `* text` | `<ul><li>text</li></ul>` |
+| Numbered list | `1. text` | `<ol><li>text</li></ol>` |
+
+`*` is both bold and bullet: `* ` at line start is a list item; `*` touching
+text is bold.
+
+## The one guarantee
+
+`toHTML(toWA(html)) === toHTML(html)` — HTML idempotence. `toWA` is best-effort
+and lossy: WhatsApp has no escape character.
+
+## MCP tools
+
+Register `wa-format-mcp` over stdio. Tools: `whatsapp_to_html(text, style,
+lineBreaks, trim)` and `html_to_whatsapp(html, bullet)`. Both read-only,
+idempotent, non-destructive, closed-world.
+
+## Facts
+
+0 core dependencies · ESM + CJS + types · 80 tests · Node ≥20.

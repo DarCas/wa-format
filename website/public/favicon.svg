@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img"
+     aria-label="wa-format">
+    <rect width="32" height="32" rx="7" fill="#0b0d0e"/>
+    <rect x="1.5" y="1.5" width="29" height="29" rx="5.5" fill="none" stroke="#262d33" stroke-width="1.5"/>
+    <rect x="6" y="9" width="8.5" height="14" rx="2.5" fill="#efe9dd"/>
+    <rect x="17.5" y="9" width="8.5" height="14" rx="2.5" fill="#2fd07a"/>
+</svg>

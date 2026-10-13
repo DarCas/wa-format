@@ -1,0 +1,206 @@
+/*
+ * Dario Casertano <dario@casertano.name>
+ * Copyright (c) 2026 Casertano Dario – All rights reserved.
+ * Licensed under the MIT License.
+ */
+
+.hero {
+    padding-block: var(--s18) var(--gap-section);
+}
+
+.layout {
+    display: grid;
+    gap: var(--s10);
+    align-items: start;
+}
+
+.eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s2);
+    margin-bottom: var(--s5);
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: var(--fs-eyebrow);
+    line-height: var(--lh-eyebrow);
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+}
+
+.eyebrowMark {
+    padding: 2px var(--s2);
+    border: 1px solid var(--accent-dim);
+    border-radius: var(--r-chip);
+    background: var(--accent-wash);
+}
+
+.title {
+    max-width: 16ch;
+    margin-bottom: var(--s5);
+}
+
+.titleAccent {
+    color: var(--accent);
+}
+
+.lead {
+    max-width: 56ch;
+    margin-bottom: var(--s6);
+    font-size: var(--fs-lead);
+    line-height: var(--lh-lead);
+}
+
+.leadCode {
+    color: var(--ink);
+    font-family: var(--font-mono);
+    font-size: 0.95em;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: var(--s3);
+    flex-wrap: wrap;
+    margin-bottom: var(--s8);
+}
+
+.primary {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s2);
+    padding: var(--s3) var(--s5);
+    border: 1px solid var(--accent-dim);
+    border-radius: var(--r-btn);
+    background: var(--accent);
+    color: var(--bg);
+    font-size: var(--fs-nav);
+    font-weight: 500;
+    transition:
+        background-color var(--dur-fast) var(--ease),
+        color var(--dur-fast) var(--ease);
+}
+
+.primary:hover {
+    background: var(--accent-hi);
+}
+
+.primaryCommand {
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono);
+}
+
+.primary[data-state='done'] {
+    background: var(--accent-wash);
+    color: var(--accent);
+}
+
+.ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s2);
+    padding: var(--s3) var(--s5);
+    border: 1px solid var(--line);
+    border-radius: var(--r-btn);
+    color: var(--ink-2);
+    font-size: var(--fs-nav);
+    font-weight: 500;
+    transition:
+        color var(--dur-fast) var(--ease),
+        border-color var(--dur-fast) var(--ease);
+}
+
+.ghost:hover {
+    color: var(--ink);
+    border-color: var(--line-strong);
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px;
+    padding: var(--s4);
+    border: 1px solid var(--line);
+    border-radius: var(--r-pane);
+    background: var(--line);
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s1);
+    padding: var(--s3);
+    border-radius: var(--r-btn);
+    background: var(--bg-elev);
+}
+
+.statValue {
+    color: var(--ink);
+    font-family: var(--font-mono);
+    font-size: var(--fs-h3);
+    line-height: var(--lh-h3);
+    font-weight: 500;
+}
+
+.statLabel {
+    color: var(--ink-3);
+    font-family: var(--font-mono);
+    font-size: var(--fs-eyebrow);
+    line-height: var(--lh-eyebrow);
+    letter-spacing: 0.04em;
+}
+
+.playground {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s3);
+}
+
+.playgroundHead {
+    display: flex;
+    align-items: baseline;
+    gap: var(--s3);
+    flex-wrap: wrap;
+}
+
+.playgroundTitle {
+    font-family: var(--font-mono);
+    font-size: var(--fs-eyebrow);
+    line-height: var(--lh-eyebrow);
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+}
+
+.playgroundHint {
+    color: var(--ink-3);
+    font-size: var(--fs-sm);
+    line-height: var(--lh-sm);
+}
+
+/* The two-pane converter needs real width; side-by-side only pays off on wide screens. */
+@media (min-width: 1280px) {
+    .layout {
+        grid-template-columns: minmax(320px, 420px) minmax(0, 1fr);
+        gap: var(--s14);
+    }
+
+    .title {
+        max-width: 14ch;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 767px) {
+    .hero {
+        padding-block: var(--s10) var(--gap-section);
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+}
