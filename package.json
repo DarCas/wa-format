@@ -1,0 +1,63 @@
+{
+  "author": {
+    "email": "dario@casertano.name",
+    "name": "Dario Casertano (DarCas)",
+    "url": "https://casertano.name"
+  },
+  "bugs": {
+    "url": "https://github.com/DarCas/wa-format/issues"
+  },
+  "description": "Convert WhatsApp formatted text into HTML. Supports bold, italic, strikethrough, inline code, code blocks, block quotes and lists. Zero runtime dependencies; works in Node.js and the browser.",
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.7.0"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/esm/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js",
+      "default": "./dist/esm/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "homepage": "https://github.com/DarCas/wa-format#readme",
+  "keywords": [
+    "whatsapp",
+    "wa",
+    "format",
+    "formatter",
+    "markdown",
+    "html",
+    "chat",
+    "parser"
+  ],
+  "license": "MIT",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "name": "@darcas/wa-format",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DarCas/wa-format.git"
+  },
+  "scripts": {
+    "build": "npm run clean && npm run build:esm && npm run build:cjs && node scripts/postbuild.mjs",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "clean": "rm -rf dist",
+    "deploy": "npm run typecheck && npm run build && npm publish --access public",
+    "prepack": "npm run build",
+    "pretest": "npm run build",
+    "test": "node --test \"./tests/**/*.test.ts\"",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "sideEffects": false,
+  "type": "module",
+  "types": "./dist/esm/index.d.ts",
+  "version": "0.1.0"
+}
