@@ -1,14 +1,14 @@
 # wa-format
 
-Convert **WhatsApp formatted text into HTML**. Zero runtime dependencies. Works in
-Node.js and the browser. Written in TypeScript, ships ESM, CommonJS and type
-declarations.
+Convert between **WhatsApp formatted text and HTML**. Zero runtime dependencies.
+Works in Node.js and the browser. Written in TypeScript, ships ESM, CommonJS and
+type declarations.
 
 ```ts
-import { toHTML } from "@darcas/wa-format";
+import { toHTML, toWA } from "@darcas/wa-format"
 
-toHTML("*Hello* _world_");
-// => "<b>Hello</b> <i>world</i>"
+toHTML("*Hello* _world_")         // => "<b>Hello</b> <i>world</i>"
+toWA("<b>Hello</b> <i>world</i>") // => "*Hello* _world_"
 ```
 
 ## Install
@@ -42,25 +42,25 @@ toHTML("_*bold italic*_"); // "<i><b>bold italic</b></i>"
 ### ESM
 
 ```ts
-import { toHTML } from "@darcas/wa-format";
+import { toHTML } from "@darcas/wa-format"
 
-const html = toHTML("*Bold*, _italic_, ~strike~ and `code`.");
+const html = toHTML("*Bold*, _italic_, ~strike~ and `code`.")
 ```
 
 ### CommonJS
 
 ```js
-const { toHTML } = require("@darcas/wa-format");
+const { toHTML } = require("@darcas/wa-format")
 
-const html = toHTML("*Bold* and _italic_.");
+const html = toHTML("*Bold* and _italic_.")
 ```
 
 ### Browser
 
 ```html
 <script type="module">
-  import { toHTML } from "https://esm.sh/@darcas/wa-format";
-  document.querySelector("#message").innerHTML = toHTML("*Hello* _world_");
+  import { toHTML } from "https://esm.sh/@darcas/wa-format"
+  document.querySelector("#message").innerHTML = toHTML("*Hello* _world_")
 </script>
 ```
 
@@ -88,11 +88,35 @@ rendering or inspection. See [`src/ast.ts`](src/ast.ts) for the node types.
 Renders a `Document` produced by `parse` to HTML with resolved options.
 
 ```ts
-import { parse, renderHtml, resolveOptions } from "@darcas/wa-format";
+import { parse, renderHtml, resolveOptions } from "@darcas/wa-format"
 
-const doc = parse("*Hello*");
-const html = renderHtml(doc, resolveOptions());
+const doc = parse("*Hello*")
+const html = renderHtml(doc, resolveOptions())
 ```
+
+### `toWA(html, options?)`
+
+The inverse of `toHTML`: converts HTML into WhatsApp-formatted text.
+
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `bullet` | `"-" \| "*"` | `"-"` | Marker used for bulleted lists. |
+
+Recognized tags: `<b>`/`<strong>`, `<i>`/`<em>`, `<s>`/`<strike>`/`<del>`,
+`<code>`, `<pre>`, `<blockquote>`, `<ul>`/`<ol>`/`<li>` (with `start`),
+`<a href>` (kept as `text (url)`), `<br>`, and the line containers
+`<p>`/`<div>`/`<h1>`–`<h6>`. Unknown tags are unwrapped and entities are decoded.
+
+```ts
+toWA("<b>Hello</b> <i>world</i>")        // => "*Hello* _world_"
+toWA("<blockquote>a<br>b</blockquote>")  // => "> a\n> b"
+toWA("<ul><li>one</li><li>two</li></ul>") // => "- one\n- two"
+```
+
+### `parseHtml(html)`
+
+Parses an HTML fragment into a lightweight node tree (`HtmlNode[]`). Lower-level
+building block used by `toWA`.
 
 ## Behavior notes
 
@@ -115,6 +139,11 @@ the following rules, all covered by tests:
 - **Newlines:** a `\n` between text lines becomes `<br>`. A newline that joins a
   block element (list, quote, code block) to its neighbours is represented by the
   element itself. A blank line next to a block element is absorbed.
+- **`toWA` is best-effort and lossy.** WhatsApp has no escape character, so a
+  literal `*`/`_`/`~`/`` ` `` in the text, marker runs adjacent to word characters
+  (`<b>a</b>b` → `*a*b`), and code containing backticks cannot round-trip exactly.
+  Whitespace at the edges of a style is moved outside its markers. The guaranteed
+  property is HTML idempotence: `toHTML(toWA(html)) === toHTML(html)`.
 
 ## Development
 
@@ -124,7 +153,7 @@ development-only.
 ```bash
 npm install        # install dev tooling
 npm run build      # emit dist/esm (ESM + .d.ts) and dist/cjs (CommonJS)
-npm test           # build, then run the node:test suite (50 tests)
+npm test           # build, then run the node:test suite (71 tests)
 npm run typecheck  # type-check src and tests
 ```
 

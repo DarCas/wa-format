@@ -1,26 +1,36 @@
-import type { FormatOptions } from "./options.js";
-import { resolveOptions } from "./options.js";
-import { parse } from "./parser.js";
-import { renderHtml } from "./renderer.js";
+/*
+ * Dario Casertano <dario@casertano.name>
+ * Copyright (c) 2026 Casertano Dario – All rights reserved.
+ * Licensed under the MIT License.
+ */
 
-export { parse } from "./parser.js";
-export { renderHtml } from "./renderer.js";
-export { resolveOptions, DEFAULT_OPTIONS } from "./options.js";
-export type { FormatOptions, ResolvedOptions } from "./options.js";
+import type { FormatOptions } from "./options.js"
+import { resolveOptions } from "./options.js"
+import { parse } from "./parser.js"
+import { renderHtml } from "./renderer.js"
+
+export { parse } from "./parser.js"
+export { renderHtml } from "./renderer.js"
+export { resolveOptions, DEFAULT_OPTIONS } from "./options.js"
+export { toWA } from "./html/to-wa.js"
+export type { ToWAOptions } from "./html/to-wa.js"
+export { parseHtml } from "./html/dom.js"
+export type { HtmlElement, HtmlNode, HtmlText } from "./html/dom.js"
+export type { FormatOptions, ResolvedOptions } from "./options.js"
 export type {
-  BlockNode,
-  BreakNode,
-  CodeBlockNode,
-  CodeNode,
-  Document,
-  InlineNode,
-  InlineStyle,
-  ListNode,
-  ParagraphNode,
-  QuoteNode,
-  StyleNode,
-  TextNode,
-} from "./ast.js";
+    BlockNode,
+    BreakNode,
+    CodeBlockNode,
+    CodeNode,
+    Document,
+    InlineNode,
+    InlineStyle,
+    ListNode,
+    ParagraphNode,
+    QuoteNode,
+    StyleNode,
+    TextNode,
+} from "./ast.js"
 
 /**
  * Converts a WhatsApp-formatted message into HTML.
@@ -34,15 +44,17 @@ export type {
  *
  * @example
  * ```ts
- * toHTML("*Hello* _world_"); // "<b>Hello</b> <i>world</i>"
+ * toHTML("*Hello* _world_") // "<b>Hello</b> <i>world</i>"
  * ```
  */
 export function toHTML(input: string, options?: FormatOptions): string {
-  if (typeof input !== "string") {
-    throw new TypeError("wa-format: `input` must be a string");
-  }
-  const resolved = resolveOptions(options);
-  const source = resolved.trim ? input.trim() : input;
-  if (source.trim() === "") return "";
-  return renderHtml(parse(source), resolved);
+    if (typeof input !== "string") {
+        throw new TypeError("wa-format: `input` must be a string")
+    }
+
+    const resolved = resolveOptions(options)
+    const source = resolved.trim ? input.trim() : input
+    if (source.trim() === "") return ""
+
+    return renderHtml(parse(source), resolved)
 }

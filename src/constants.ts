@@ -1,19 +1,25 @@
-import type { InlineStyle } from "./ast.js";
+/*
+ * Dario Casertano <dario@casertano.name>
+ * Copyright (c) 2026 Casertano Dario – All rights reserved.
+ * Licensed under the MIT License.
+ */
+
+import type { InlineStyle } from "./ast.js"
 
 /** Bold marker: `*text*`. */
-export const BOLD_MARKER = "*";
+export const BOLD_MARKER = "*"
 /** Italic marker: `_text_`. */
-export const ITALIC_MARKER = "_";
+export const ITALIC_MARKER = "_"
 /** Strikethrough marker: `~text~`. */
-export const STRIKE_MARKER = "~";
+export const STRIKE_MARKER = "~"
 /** Inline code marker: `` `text` ``. */
-export const CODE_MARKER = "`";
+export const CODE_MARKER = "`"
 /** Code block marker: ` ```text``` `. */
-export const CODE_BLOCK_MARKER = "```";
+export const CODE_BLOCK_MARKER = "```"
 /** Block quote marker: `> text`. */
-export const QUOTE_MARKER = ">";
+export const QUOTE_MARKER = ">"
 /** Bulleted list markers: `- text` or `* text`. */
-export const BULLET_MARKERS = ["-", "*"] as const;
+export const BULLET_MARKERS = ["-", "*"] as const
 
 /**
  * Maps an inline marker character to its style.
@@ -21,13 +27,13 @@ export const BULLET_MARKERS = ["-", "*"] as const;
  * separately because code is opaque (its content is never re-parsed).
  */
 export const STYLE_BY_MARKER: Readonly<Record<string, InlineStyle | undefined>> = {
-  [BOLD_MARKER]: "bold",
-  [ITALIC_MARKER]: "italic",
-  [STRIKE_MARKER]: "strike",
-};
+    [ BOLD_MARKER ]: "bold",
+    [ ITALIC_MARKER ]: "italic",
+    [ STRIKE_MARKER ]: "strike",
+}
 
-const WORD_CHAR = /[\p{L}\p{N}]/u;
-const WHITESPACE = /\s/u;
+const WORD_CHAR = /[\p{L}\p{N}]/u
+const WHITESPACE = /\s/u
 
 /**
  * True when `ch` is a letter or a digit (Unicode aware).
@@ -35,10 +41,10 @@ const WHITESPACE = /\s/u;
  * so `*_bold italic_*` can nest.
  */
 export function isWordChar(ch: string): boolean {
-  return WORD_CHAR.test(ch);
+    return WORD_CHAR.test(ch)
 }
 
 /** True when `ch` is whitespace (space, tab, newline, ...). */
 export function isWhitespace(ch: string): boolean {
-  return WHITESPACE.test(ch);
+    return WHITESPACE.test(ch)
 }
