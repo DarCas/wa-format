@@ -7,7 +7,7 @@
 
 - [Site](https://wa-format.os.darcas.app/)
 - [Repo](https://github.com/DarCas/wa-format)
-- [Package](https://www.npmjs.com/package/@darcas/wa-format) `@darcas/wa-format` v0.5.0
+- [Package](https://www.npmjs.com/package/@darcas/wa-format) `@darcas/wa-format` v1.0.0
 - [License](https://github.com/DarCas/wa-format/blob/master/LICENSE) MIT
 
 ## Install

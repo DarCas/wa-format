@@ -20,6 +20,12 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const source = resolve(root, '../package.json')
 const target = resolve(root, 'src/generated/facts.json')
 
+// The package version is also stated in plain text in the llms files. It is
+// synced from the same manifest on every build so it can never drift behind
+// a release the way a hand-edited version would.
+const LLMS_FILES = ['public/llms.txt', 'public/llms-full.txt']
+const VERSION_PATTERN = /(`@darcas\/wa-format` )v\d+\.\d+\.\d+/g
+
 const fallback = {
     description: 'Convert WhatsApp formatted text into HTML and back.',
     keywords: ['whatsapp', 'format', 'html'],
@@ -63,6 +69,25 @@ async function main() {
     await writeFile(target, `${JSON.stringify(facts, null, 2)}\n`)
 
     console.log(`facts: ${facts.name}@${facts.version}`)
+
+    for (const file of LLMS_FILES) {
+        try {
+            const path = resolve(root, file)
+            const text = await readFile(path, 'utf8')
+
+            if (!VERSION_PATTERN.test(text)) {
+                console.warn(`facts: no version stamp found in ${file}, left untouched`)
+                continue
+            }
+
+            VERSION_PATTERN.lastIndex = 0
+            await writeFile(path, text.replace(VERSION_PATTERN, `$1v${facts.version}`))
+
+            console.log(`facts: version synced in ${file}`)
+        } catch (error) {
+            console.warn(`facts: could not sync ${file} (${error.message})`)
+        }
+    }
 }
 
 await main()
