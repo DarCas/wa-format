@@ -5,7 +5,7 @@
 > Zero-dependency core (only the MCP server pulls the protocol SDK). Isomorphic:
 > Node ≥20 and modern browsers. ESM + CJS + TypeScript declarations.
 
-- Site: https://whatsapp-html.os.darcas.app/
+- Site: https://wa-format.os.darcas.app/
 - Repo: https://github.com/DarCas/wa-format
 - Package: @darcas/wa-format v0.5.0
 - License: MIT

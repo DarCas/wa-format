@@ -7,7 +7,9 @@
 .tabs {
     display: flex;
     gap: var(--s1);
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: thin;
     margin-bottom: var(--s6);
     padding: 3px;
     border: 1px solid var(--line);
@@ -18,6 +20,7 @@
 }
 
 .tab {
+    flex: none;
     padding: var(--s2) var(--s4);
     border-radius: var(--r-chip);
     color: var(--ink-3);
@@ -56,6 +59,12 @@
     color: var(--ink);
     font-family: var(--font-mono);
     font-size: var(--fs-mono);
+}
+
+.desc {
+    color: var(--ink-2);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
 }
 
 .example {
@@ -118,13 +127,8 @@
     white-space: nowrap;
 }
 
-.note,
-.footnote {
+.note {
     color: var(--ink-3);
     font-size: var(--fs-sm);
     line-height: var(--lh-sm);
-}
-
-.footnote {
-    margin-top: var(--s4);
 }

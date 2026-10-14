@@ -39,6 +39,52 @@ const TOKEN_CLASS: Record<TokenKind, string | undefined> = {
 
 const ANNOUNCE_DELAY = 400
 
+/* Base styles for the sandboxed preview document. Literals mirror tokens.css:
+ * an iframe cannot read the parent page's custom properties. */
+const PREVIEW_STYLE = [
+    "body{margin:0;padding:12px 14px;font:13px/1.7 ui-sans-serif,system-ui,sans-serif;",
+    "color:#e9edf0;background:#12161a;overflow-wrap:anywhere}",
+    "a{color:#7cc4ff}",
+    "code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px}",
+    "pre{background:#0b0d0e;padding:8px 10px;border-radius:6px;overflow:auto}",
+    "blockquote{border-left:2px solid #2fd07a;margin:0;padding-left:12px;color:#a4afb7}",
+    "ul,ol{margin:0;padding-left:20px}",
+    "p{margin:0 0 8px}",
+    "html{scrollbar-width:thin;scrollbar-color:#38424a transparent}",
+    "::-webkit-scrollbar{width:10px;height:10px}",
+    "::-webkit-scrollbar-track{background:transparent}",
+    "::-webkit-scrollbar-thumb{background:#38424a;border:3px solid #12161a;border-radius:999px}",
+    "::-webkit-scrollbar-thumb:hover{background:#7f8b94}",
+].join("")
+
+/**
+ * Wraps an HTML fragment in a minimal sandboxed document. Pure string
+ * transform, so server prerender and client hydration produce the same srcDoc.
+ */
+function buildPreviewDoc(fragment: string): string {
+    const body = fragment.trim() === "" ? '<p style="opacity:.55;margin:0">—</p>' : fragment
+
+    return `<!doctype html><html><head><meta charset="utf-8"><base target="_blank"><style>${PREVIEW_STYLE}</style></head><body>${body}</body></html>`
+}
+
+/** Sandboxed live preview of the HTML side. `sandbox=""` blocks scripts and forms. */
+function HtmlPreview({ html }: { html: string }) {
+    const doc = useMemo(() => buildPreviewDoc(html), [html])
+
+    return (
+        <div className={styles.preview}>
+            <span className={styles.previewLabel}>Preview</span>
+            <iframe
+                className={styles.previewFrame}
+                loading="lazy"
+                sandbox=""
+                srcDoc={doc}
+                title="HTML preview"
+            />
+        </div>
+    )
+}
+
 interface OptionToggleProps<T extends string> {
     label: string
     onChange: (value: T) => void
@@ -108,6 +154,7 @@ export function Converter() {
     const outputName = state.direction === 'to-html' ? 'HTML' : 'WhatsApp'
     const inputTone = state.direction === 'to-html' ? 'paper' : 'dark'
     const overBudget = state.input.length > INPUT_LIMIT
+    const htmlSource = state.direction === 'to-html' ? output : state.input
 
     const patch = useCallback((next: Partial<ConverterState>) => {
         setState((current) => ({ ...current, ...next }))
@@ -158,13 +205,28 @@ export function Converter() {
                         <span className={styles.paneTitle}>{inputName}</span>
                         <span className={styles.badge}>Input</span>
                     </div>
-                    <textarea
-                        aria-label={`${inputName} input`}
-                        className={styles.textarea}
-                        onChange={(event) => patch({ input: event.target.value })}
-                        spellCheck={false}
-                        value={state.input}
-                    />
+                    {state.direction === 'to-wa'
+                        ? (
+                            <>
+                                <textarea
+                                    aria-label={`${inputName} input`}
+                                    className={`${styles.textarea} ${styles.splitInput}`}
+                                    onChange={(event) => patch({ input: event.target.value })}
+                                    spellCheck={false}
+                                    value={state.input}
+                                />
+                                <HtmlPreview html={htmlSource} />
+                            </>
+                        )
+                        : (
+                            <textarea
+                                aria-label={`${inputName} input`}
+                                className={styles.textarea}
+                                onChange={(event) => patch({ input: event.target.value })}
+                                spellCheck={false}
+                                value={state.input}
+                            />
+                        )}
                 </section>
 
                 <div>
@@ -194,15 +256,32 @@ export function Converter() {
                             <OutputCopy value={output} />
                         </span>
                     </div>
-                    <pre className={styles.output} tabIndex={0}>
-                        {tokens.length === 0
-                            ? '—'
-                            : tokens.map((token, index) => (
-                                <span className={TOKEN_CLASS[token.kind]} key={index}>
-                                    {token.text}
-                                </span>
-                            ))}
-                    </pre>
+                    {state.direction === 'to-html'
+                        ? (
+                            <>
+                                <pre className={`${styles.output} ${styles.splitCode}`} tabIndex={0}>
+                                    {tokens.length === 0
+                                        ? '—'
+                                        : tokens.map((token, index) => (
+                                            <span className={TOKEN_CLASS[token.kind]} key={index}>
+                                                {token.text}
+                                            </span>
+                                        ))}
+                                </pre>
+                                <HtmlPreview html={htmlSource} />
+                            </>
+                        )
+                        : (
+                            <pre className={styles.output} tabIndex={0}>
+                                {tokens.length === 0
+                                    ? '—'
+                                    : tokens.map((token, index) => (
+                                        <span className={TOKEN_CLASS[token.kind]} key={index}>
+                                            {token.text}
+                                        </span>
+                                    ))}
+                            </pre>
+                        )}
                 </section>
             </div>
 

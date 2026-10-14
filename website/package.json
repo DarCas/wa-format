@@ -14,7 +14,6 @@
   "description": "Landing page for @darcas/wa-format, the bidirectional WhatsApp formatting library.",
   "devDependencies": {
     "@darcas/rollup-sub-resource-integrity": "^2.0.3",
-    "@resvg/resvg-js": "^2.6.2",
     "@types/node": "^26.4.1",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
@@ -30,7 +29,7 @@
   "name": "@darcas/wa-format-website",
   "private": true,
   "scripts": {
-    "build": "node scripts/facts.mjs && node scripts/highlight.mjs && tsc --noEmit && vite build && node scripts/og.mjs && node scripts/sitemap.mjs && node scripts/prerender.mjs",
+    "build": "node scripts/facts.mjs && node scripts/highlight.mjs && tsc --noEmit && vite build && node scripts/sitemap.mjs && node scripts/prerender.mjs",
     "dev": "vite",
     "preview": "vite preview"
   },

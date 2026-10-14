@@ -6,7 +6,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-import { INSTALL_COMMAND, STATS } from '../data/stats'
+import { INSTALL_COMMAND } from '../data/stats'
 import { copyText } from '../lib/copy'
 
 import { Converter } from './Converter'
@@ -44,15 +44,6 @@ export function Hero() {
                             Read the API
                             <span aria-hidden="true">→</span>
                         </a>
-                    </div>
-
-                    <div className={styles.stats}>
-                        {STATS.map((stat) => (
-                            <div className={styles.stat} key={stat.label}>
-                                <span className={styles.statValue}>{stat.value}</span>
-                                <span className={styles.statLabel}>{stat.label}</span>
-                            </div>
-                        ))}
                     </div>
                 </div>
 

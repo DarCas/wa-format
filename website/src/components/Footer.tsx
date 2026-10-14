@@ -8,27 +8,35 @@ import facts from '../generated/facts.json'
 
 import styles from './Footer.module.css'
 
-const YEAR = new Date().getFullYear()
+const START_YEAR = 2026
+
+function getYearRange(): string {
+    const current = new Date().getFullYear()
+    return current > START_YEAR ? `${START_YEAR}-${current}` : `${START_YEAR}`
+}
 
 /**
- * Footer: wordmark, doc/project/legal columns, facts block for extractors,
- * PayPal button matching the README badge, and the author credit.
+ * Footer: wordmark, doc/project columns, PayPal button matching the
+ * README badge, and the author credit.
  */
 export function Footer() {
     return (
-        <footer className={styles.footer}>
+        <footer className={styles.footer} id="credits">
             <div className="container">
-                <p className={styles.facts}>
-                    {facts.name} v{facts.version} — 0 core dependencies, ESM + CJS + types, 80 tests, Node {facts.nodeEngine}.
-                </p>
                 <div className={styles.grid}>
-                    <div>
+                    <div className={styles.intro}>
                         <p className={styles.brand}>
                             <span className={styles.scope}>@darcas/</span>wa-format
                         </p>
                         <p className={styles.tagline}>WhatsApp formatting to HTML — and back.</p>
                         <p className={styles.credit}>
-                            Built by <a href="https://casertano.name" rel="noreferrer" target="_blank">Dario Casertano</a>
+                            Built by <a href="https://casertano.name" rel="noreferrer"
+                                        target="_blank">Dario Casertano</a>
+                        </p>
+                        <p className={styles.credit}>
+                            Layout designed with <a
+                            href="https://github.com/DarCas/refero-design-mcp" rel="noreferrer"
+                            target="_blank">@darcas/refero-design-mcp</a>
                         </p>
                         <a
                             className={styles.coffee}
@@ -51,27 +59,25 @@ export function Footer() {
                     <nav aria-label="Project" className={styles.col}>
                         <p className={styles.head}>Project</p>
                         <ul>
-                            <li><a href={facts.repository} rel="noreferrer" target="_blank">GitHub</a></li>
+                            <li><a href={facts.repository} rel="noreferrer"
+                                   target="_blank">GitHub</a></li>
                             <li>
-                                <a href="https://www.npmjs.com/package/@darcas/wa-format" rel="noreferrer" target="_blank">
+                                <a href="https://www.npmjs.com/package/@darcas/wa-format"
+                                   rel="noreferrer" target="_blank">
                                     npm
                                 </a>
                             </li>
-                            <li><a href={`${facts.repository}/issues`} rel="noreferrer" target="_blank">Issues</a></li>
-                        </ul>
-                    </nav>
-                    <nav aria-label="Legal" className={styles.col}>
-                        <p className={styles.head}>Legal</p>
-                        <ul>
-                            <li>
-                                <a href={`${facts.repository}/blob/master/LICENSE`} rel="noreferrer" target="_blank">
-                                    MIT License
-                                </a>
-                            </li>
+                            <li><a href={`${facts.repository}/issues`} rel="noreferrer"
+                                   target="_blank">Issues</a></li>
                         </ul>
                     </nav>
                 </div>
-                <p className={styles.copy}>© {YEAR} Dario Casertano. MIT licensed.</p>
+                <p className={styles.copy}>
+                    © {getYearRange()} Dario Casertano.{' '}
+                    <a href={`${facts.repository}/blob/master/LICENSE`} rel="noreferrer" target="_blank">
+                        MIT licensed.
+                    </a>
+                </p>
             </div>
         </footer>
     )

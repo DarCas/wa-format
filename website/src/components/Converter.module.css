@@ -179,13 +179,28 @@
     min-height: 260px;
     padding: var(--s3);
     border: none;
-    resize: vertical;
+    resize: none;
     background: transparent;
     color: var(--paper-ink);
     font-family: var(--font-mono);
     font-size: var(--fs-mono);
     line-height: var(--lh-mono);
     tab-size: 4;
+}
+
+.pane[data-tone='paper'] .textarea {
+    color: var(--paper-ink);
+    caret-color: var(--paper-ink);
+}
+
+.pane[data-tone='dark'] .textarea {
+    color: var(--ink-2);
+    caret-color: var(--accent);
+}
+
+.pane[data-tone='dark'] .textarea::selection {
+    background: var(--accent-wash);
+    color: var(--ink);
 }
 
 .textarea:focus-visible {
@@ -215,6 +230,60 @@
 
 .pane[data-tone='paper'] .output {
     color: var(--paper-ink);
+}
+
+/* Split HTML pane: code on top (55), live rendered preview below (45). */
+.pane:has(.preview) {
+    min-height: 460px;
+}
+
+.splitCode {
+    flex: 11 1 0;
+    min-height: 0;
+    max-height: none;
+}
+
+.splitInput {
+    flex: 11 1 0;
+    min-height: 0;
+}
+
+.preview {
+    display: flex;
+    flex-direction: column;
+    flex: 9 1 0;
+    min-height: 0;
+    border-top: 1px solid var(--line);
+}
+
+.pane[data-tone='paper'] .preview {
+    border-top-color: var(--paper-line);
+}
+
+.previewLabel {
+    flex: none;
+    padding: var(--s2) var(--s3) 0;
+    color: var(--ink-3);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    line-height: 1.4;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.pane[data-tone='paper'] .previewLabel {
+    color: var(--paper-ink-2);
+}
+
+.previewFrame {
+    display: block;
+    flex: 1;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    border: 0;
+    background: var(--bg-elev);
+    color-scheme: dark;
 }
 
 /* Token colours for live converter output. Static samples use Shiki at build time. */
@@ -361,6 +430,10 @@
         grid-template-columns: 1fr;
     }
 
+    .pane:has(.preview) {
+        min-height: 0;
+    }
+
     .swap {
         justify-self: center;
         transform: rotate(90deg);
@@ -374,8 +447,28 @@
         min-height: 160px;
     }
 
+    .splitInput {
+        flex: none;
+        min-height: 150px;
+    }
+
     .output {
         min-height: 160px;
+    }
+
+    .splitCode {
+        flex: none;
+        min-height: 150px;
+        max-height: 220px;
+    }
+
+    .preview {
+        flex: none;
+    }
+
+    .previewFrame {
+        flex: none;
+        height: 120px;
     }
 
     .budget {

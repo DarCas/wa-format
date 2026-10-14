@@ -10,6 +10,10 @@
     align-items: start;
 }
 
+.layout > * {
+    min-width: 0;
+}
+
 .scroll {
     overflow-x: auto;
     border: 1px solid var(--line);

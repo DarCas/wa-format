@@ -4,10 +4,10 @@
  * Licensed under the MIT License.
  */
 
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import type { KeyboardEvent } from 'react'
 
-import { API_ENTRIES, API_FOOTNOTE } from '../data/api'
+import { API_ENTRIES } from '../data/api'
 
 import { Section } from './ui/Section'
 
@@ -20,6 +20,7 @@ import styles from './ApiReference.module.css'
  */
 export function ApiReference() {
     const [active, setActive] = useState(API_ENTRIES[0].id)
+    const listRef = useRef<HTMLDivElement | null>(null)
     const tabRefs = useRef<Array<HTMLButtonElement | null>>([])
 
     const onKeyDown = useCallback((event: KeyboardEvent) => {
@@ -37,6 +38,24 @@ export function ApiReference() {
         tabRefs.current[API_ENTRIES.findIndex((entry) => entry.id === next.id)]?.focus()
     }, [active])
 
+    /** Keeps the active tab visible by scrolling the tablist itself.
+     * `scrollIntoView` is unreliable here: it delegates to page ancestors
+     * instead of moving the tablist. Direct scrollLeft always works. */
+    useEffect(() => {
+        const list = listRef.current
+        const tab = tabRefs.current[API_ENTRIES.findIndex((entry) => entry.id === active)]
+
+        if (!list || !tab) {
+            return
+        }
+
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        const shift = tab.getBoundingClientRect().left - list.getBoundingClientRect().left
+        const target = list.scrollLeft + shift - (list.clientWidth - tab.clientWidth) / 2
+
+        list.scrollTo({ behavior: reduce ? 'auto' : 'smooth', left: Math.max(0, target) })
+    }, [active])
+
     return (
         <Section
             eyebrow="API"
@@ -44,7 +63,7 @@ export function ApiReference() {
             lead="Five exports. Two converters, two parsers, one renderer."
             title="Reference."
         >
-            <div className={styles.tabs} onKeyDown={onKeyDown} role="tablist" aria-label="API exports">
+            <div className={styles.tabs} onKeyDown={onKeyDown} ref={listRef} role="tablist" aria-label="API exports">
                 {API_ENTRIES.map((entry, index) => (
                     <button
                         aria-controls={`panel-${entry.id}`}
@@ -77,6 +96,7 @@ export function ApiReference() {
                     <p className={styles.signature}>
                         <code>{entry.signature}</code>
                     </p>
+                    <p className={styles.desc}>{entry.desc}</p>
                     <p className={styles.example}>
                         <code>{entry.example}</code>
                     </p>
@@ -113,7 +133,6 @@ export function ApiReference() {
                     <p className={styles.note}>{entry.optionsNote}</p>
                 </div>
             ))}
-            <p className={styles.footnote}>{API_FOOTNOTE}</p>
         </Section>
     )
 }

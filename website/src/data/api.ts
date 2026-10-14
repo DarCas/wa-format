@@ -12,6 +12,7 @@ export interface OptionRow {
 }
 
 export interface ApiEntry {
+    desc: string
     example: string
     id: string
     label: string
@@ -26,6 +27,7 @@ export interface ApiEntry {
  */
 export const API_ENTRIES: readonly ApiEntry[] = [
     {
+        desc: "Converts WhatsApp-formatted text to safe HTML. This is the main export — use it to render messages.",
         example: `toHTML("*Bold*, _italic_, ~strike~ and \`code\`.")`,
         id: "toHTML",
         label: "toHTML",
@@ -53,6 +55,7 @@ export const API_ENTRIES: readonly ApiEntry[] = [
         signature: "toHTML(input: string, options?: FormatOptions): string",
     },
     {
+        desc: "Converts supported HTML back to WhatsApp markup. Best-effort and lossy — the guarantee is HTML idempotence, not byte equality.",
         example: `toWA("<b>Hello</b> <i>world</i>") // "*Hello* _world_"`,
         id: "toWA",
         label: "toWA",
@@ -68,6 +71,7 @@ export const API_ENTRIES: readonly ApiEntry[] = [
         signature: "toWA(html: string, options?: ToWAOptions): string",
     },
     {
+        desc: "Parses WhatsApp-formatted text into an AST instead of HTML. Use it to inspect the structure or to feed a custom renderer.",
         example: `import { parse, renderHtml, resolveOptions } from "@darcas/wa-format"\n\nconst doc = parse("*Hello*")\nconst html = renderHtml(doc, resolveOptions())`,
         id: "parse",
         label: "parse",
@@ -76,6 +80,7 @@ export const API_ENTRIES: readonly ApiEntry[] = [
         signature: "parse(input: string): Document",
     },
     {
+        desc: "Renders a Document produced by parse to HTML. Pair the two when toHTML alone is not enough — for example to parse once and render with several option sets.",
         example: `import { parse, renderHtml, resolveOptions } from "@darcas/wa-format"\n\nrenderHtml(parse("*Hello*"), resolveOptions()) // "<b>Hello</b>"`,
         id: "renderHtml",
         label: "renderHtml",
@@ -84,6 +89,7 @@ export const API_ENTRIES: readonly ApiEntry[] = [
         signature: "renderHtml(document: Document, options: ResolvedOptions): string",
     },
     {
+        desc: "Parses an HTML fragment into a lightweight node tree. Low-level counterpart of parse on the HTML side, used internally by toWA.",
         example: `import { parseHtml } from "@darcas/wa-format"\n\nparseHtml("<b>Hello</b>") // [{ type: "element", tag: "b", ... }]`,
         id: "parseHtml",
         label: "parseHtml",
@@ -92,5 +98,3 @@ export const API_ENTRIES: readonly ApiEntry[] = [
         signature: "parseHtml(html: string): HtmlNode[]",
     },
 ]
-
-export const API_FOOTNOTE = "Additional exports: resolveOptions, DEFAULT_OPTIONS, FormatOptions, ResolvedOptions, ToWAOptions and the AST node types."

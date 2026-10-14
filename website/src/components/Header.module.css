@@ -14,10 +14,9 @@
     transition: border-color var(--dur-base) var(--ease);
 }
 
-/* The only permitted outer shadow: a hairline ring once the page has scrolled. */
+/* A single 1px hairline once the page has scrolled — no doubled shadow line. */
 .header[data-scrolled='true'] {
     border-bottom-color: var(--line);
-    box-shadow: 0 1px 0 0 var(--line);
 }
 
 .inner {
@@ -121,38 +120,81 @@
     text-transform: uppercase;
 }
 
+/* Frosted-glass scrim behind the open disclosure. Always in the DOM (SSR-safe)
+ * and only painted on mobile while open, below the sticky header. */
+.scrim {
+    display: none;
+}
+
 @media (max-width: 899px) {
+    /* Open menu: opaque header so the scrim underneath cannot bleed through
+     * its translucent resting background. */
+    .header[data-open='true'] {
+        background: var(--bg-elev);
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        border-bottom-color: var(--line);
+    }
+
     .nav {
         position: absolute;
-        top: var(--header-h);
+        /* Overlap the header's bottom border by 1px so the first item's
+         * border-top lands on the same line instead of doubling it. */
+        top: calc(var(--header-h) - 1px);
         left: 0;
         right: 0;
-        display: none;
+        display: flex;
         flex-direction: column;
         align-items: stretch;
         gap: 0;
         margin-inline-start: 0;
-        padding: var(--s2) var(--gutter) var(--s4);
+        padding: 0 0 var(--s4);
         background: var(--bg-elev);
-        border-bottom: 1px solid var(--line);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(calc(var(--s2) * -1));
+        transition:
+            opacity var(--dur-base) var(--ease),
+            transform var(--dur-base) var(--ease),
+            visibility 0s linear var(--dur-base);
     }
 
     .nav[data-open='true'] {
-        display: flex;
+        z-index: 41;
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+        mask-image: linear-gradient(to bottom, black calc(100% - 30px), transparent);
+        transition:
+            opacity var(--dur-base) var(--ease),
+            transform var(--dur-base) var(--ease);
+    }
+
+    .scrim[data-open='true'] {
+        display: block;
+        position: fixed;
+        inset: 0;
+        z-index: 40;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: color-mix(in srgb, var(--bg) 55%, transparent);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        cursor: default;
     }
 
     .navLink {
-        padding-block: var(--s3);
+        padding: var(--s3) var(--gutter);
         border-top: 1px solid var(--line);
     }
 
     .menu {
         display: inline-flex;
-        margin-inline-start: auto;
     }
 
     .actions {
-        margin-inline-start: 0;
+        margin-inline-start: auto;
     }
 
     .version {

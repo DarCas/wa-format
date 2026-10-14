@@ -24,4 +24,4 @@ Allow: /
 User-agent: Bytespider
 Allow: /
 
-Sitemap: https://whatsapp-html.os.darcas.app/sitemap.xml
+Sitemap: https://wa-format.os.darcas.app/sitemap.xml

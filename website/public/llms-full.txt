@@ -5,7 +5,7 @@
 > the bundled MCP server uses the Model Context Protocol SDK. Works in Node ≥20
 > and modern browsers. Ships ESM, CJS and TypeScript declarations.
 
-- Site: https://whatsapp-html.os.darcas.app/
+- Site: https://wa-format.os.darcas.app/
 - Repo: https://github.com/DarCas/wa-format
 - Package: @darcas/wa-format v0.5.0, MIT
 

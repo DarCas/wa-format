@@ -10,6 +10,12 @@
     align-items: start;
 }
 
+/* Grid items default to min-width: auto — long code lines would widen the
+ * column instead of scrolling inside the code block. */
+.layout > * {
+    min-width: 0;
+}
+
 .tabs {
     display: inline-flex;
     gap: var(--s1);
@@ -61,6 +67,6 @@
 
 @media (min-width: 1024px) {
     .layout {
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        grid-template-columns: minmax(0, 45fr) minmax(0, 65fr);
     }
 }
