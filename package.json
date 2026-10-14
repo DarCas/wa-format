@@ -39,8 +39,10 @@
     "wa",
     "format",
     "formatter",
+    "converter",
     "markdown",
     "html",
+    "typescript",
     "chat",
     "parser",
     "mcp"
