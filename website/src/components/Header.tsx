@@ -114,7 +114,6 @@ export function Header() {
 
                     <button
                         aria-expanded={open}
-                        aria-label="Toggle navigation"
                         className={styles.menu}
                         onClick={() => setOpen((value) => !value)}
                         type="button"

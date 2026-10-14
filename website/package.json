@@ -29,7 +29,7 @@
   "name": "@darcas/wa-format-website",
   "private": true,
   "scripts": {
-    "build": "node scripts/facts.mjs && node scripts/highlight.mjs && tsc --noEmit && vite build && node scripts/sitemap.mjs && node scripts/prerender.mjs",
+    "build": "node scripts/facts.mjs && node scripts/highlight.mjs && tsc --noEmit && vite build && node scripts/preload.mjs && node scripts/sitemap.mjs && node scripts/prerender.mjs",
     "dev": "vite",
     "preview": "vite preview"
   },

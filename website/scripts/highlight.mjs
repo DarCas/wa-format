@@ -30,6 +30,11 @@ const LANGUAGES = {
     ts: 'typescript',
 }
 
+// vitesse-dark comments (#758575, 3.62:1 on the code-block surface #171c20)
+// fail WCAG AA. #85968f keeps the desaturated-green hue and reaches 5.52:1.
+const COMMENT_FIX = /#758575dd/gi
+const COMMENT_OK = '#85968f'
+
 async function main() {
     const keys = Object.keys(SNIPPETS)
     const snippets = {}
@@ -43,10 +48,12 @@ async function main() {
             })
 
             for (const [key, snippet] of Object.entries(SNIPPETS)) {
-                snippets[key] = highlighter.codeToHtml(snippet.code, {
+                const html = highlighter.codeToHtml(snippet.code, {
                     lang: LANGUAGES[snippet.lang] ?? snippet.lang,
                     theme: 'vitesse-dark',
                 })
+
+                snippets[key] = html.replace(COMMENT_FIX, COMMENT_OK)
             }
 
             highlighter.dispose()

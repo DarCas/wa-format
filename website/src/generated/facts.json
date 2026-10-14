@@ -17,5 +17,5 @@
   "name": "@darcas/wa-format",
   "nodeEngine": ">=20",
   "repository": "https://github.com/DarCas/wa-format",
-  "version": "0.5.0"
+  "version": "1.0.0"
 }
