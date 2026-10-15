@@ -1,6 +1,7 @@
 # @darcas/wa-format
 
 [![Buy me a coffee](https://img.shields.io/badge/buy_me_a_coffee-%E2%9D%A4%EF%B8%8F-FEEBE7?&labelColor=FF0000)](https://www.paypal.com/donate/?hosted_button_id=YZQDE3TEYDBWA)
+[![M8ven Score](https://m8ven.ai/badge/mcp/darcas/wa-format)](https://m8ven.ai/mcp/darcas/wa-format?s=readme)
 [![Dynamic JSON Badge](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2FDarCas%2Frefero-design-mcp%2Frefs%2Fheads%2Fmain%2Fpackage.json&query=%24.name&label=design%20by&color=brown)](https://github.com/DarCas/refero-design-mcp)
 
 > Bidirectional WhatsApp formatting library: `toHTML` converts WhatsApp-formatted text into HTML,
